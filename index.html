@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 80%;
+            margin: auto;
+            padding-top: 50px;
+            padding-left: 8px;
+            padding-right: 8px;
+            padding-bottom: 10px;
+            position: relative;
+            border: 1px solid black;
+            height: 100px;
+            overflow: hidden;
+        }
+
+        .score {
+            width: 80%;
+            margin: auto;
+            margin-top: 16px;
+        }
+
+        .kotak {
+            background-color: blue;
+            width: 30px;
+            height: 80px;
+            margin-left: 30px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .enemy {
+            background-color: hotpink;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 0;
+            bottom:0;
+        }
+
+        .hit {
+            animation-name: hit;
+            animation-duration: 1.5s;
+            animation-timing-function: ease-out;
+            animation-iteration-count: infinite;
+        }
+
+        /* animation class */
+        .jump {
+            animation-name: jump;
+            animation-duration: 0.75s;
+        }
+        
+        @keyframes hit {
+            100% {
+                transform: translateX(-1800px);
+            }
+        }
+
+        @keyframes jump {
+            0% {
+             transform: translateY(-10px);
+            }
+            30% {
+             transform: translateY(-80px);
+            }
+            78% {
+             transform: translateY(0px);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="kotak">
+        </div>
+        <div class="enemy hit"></div>
+    </div>
+    <h4 class="score">
+        Score : <span id="score">0</span><br>
+        <!-- highscore : <span id="highscore"></span> -->
+    </h4>
+</body>
+</html>
+
+<script>
+    const kotak = document.querySelector('.kotak');
+    const enemy = document.querySelector('.enemy');
+    let score = 0;
+    // let highscore = window.localStorage.getItem('highscore') ?? 0;
+    const jumping = () => {
+        if(! kotak.classList.contains('jump')) {
+            kotak.classList.add('jump');
+            setTimeout(() => {
+                kotak.classList.remove('jump');
+            }, 500);
+        }
+    }
+
+    document.addEventListener('keydown', function({code}){
+        if(code.toLowerCase() === 'space') {
+            jumping();
+        }
+    });
+
+    document.addEventListener('click', function(){
+        jumping();
+    });
+
+    document.getElementById("highscore").innerText = 
+
+    setInterval(() => { 
+        let enemyMovement = enemy.getClientRects()[0].x;
+        let kotakY = kotak.getClientRects()[0].y;
+        document.getElementById('score').innerText = score;
+        if(enemyMovement > 189 && enemyMovement < 220) {
+            if(kotakY > 60) {
+                enemy.classList.remove('hit');
+                setTimeout(()=>{
+                    // window.localStorage.setItem("highscore",score);
+                    alert('YOU LOSEE!!!');
+                    window.location.href = '';  
+                }, 10)
+            }
+        }
+        score++;
+    }, 10);
+
+</script>
